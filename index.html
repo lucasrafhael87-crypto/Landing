@@ -1,0 +1,558 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IA Estratégica na Prática Clínica e Terapêutica</title>
+  <style>
+    :root {
+      --bg1: #120824;
+      --bg2: #1b0f38;
+      --bg3: #2a1660;
+      --blue: #5fc7ff;
+      --blue-soft: #9ee2ff;
+      --gold: #d4af37;
+      --gold-soft: #f0d889;
+      --text: #ffffff;
+      --text-soft: rgba(255,255,255,0.84);
+      --card: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.14);
+      --shadow: 0 20px 45px rgba(0,0,0,0.22);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 80% 10%, rgba(95,199,255,0.18), transparent 20%),
+        radial-gradient(circle at 20% 25%, rgba(212,175,55,0.12), transparent 18%),
+        radial-gradient(circle at 70% 55%, rgba(94,72,180,0.22), transparent 24%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .section { padding: 36px 0; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 28px 0 44px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.10;
+      pointer-events: none;
+    }
+
+    .timer-wrap {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .timer-box {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(212,175,55,0.28);
+      box-shadow: var(--shadow);
+      border-radius: 999px;
+      padding: 10px 18px;
+      color: var(--gold-soft);
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(95,199,255,0.10);
+      border: 1px solid rgba(95,199,255,0.28);
+      color: var(--blue-soft);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 5vw, 60px);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      max-width: 720px;
+    }
+
+    h2 {
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.16;
+      color: var(--gold-soft);
+      margin-bottom: 14px;
+    }
+
+    .lead {
+      margin-top: 20px;
+      font-size: clamp(18px, 2.2vw, 22px);
+      color: var(--text-soft);
+      max-width: 700px;
+    }
+
+    .mini-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .mini-point, .card, .testimonial, .faq-item, .highlight-box, .price-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .mini-point {
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text-soft);
+      backdrop-filter: blur(6px);
+    }
+
+    .cta-row {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      background: linear-gradient(180deg, #e2c45d 0%, #d4af37 100%);
+      color: #160c30;
+      font-weight: 700;
+      padding: 16px 26px;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(212,175,55,0.22);
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); opacity: 0.95; }
+
+    .cta-note {
+      color: rgba(255,255,255,0.68);
+      font-size: 14px;
+    }
+
+    .hero-art {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 10px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.28);
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      border-radius: 20px;
+      object-fit: cover;
+    }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+      padding: 28px;
+    }
+
+    .card p, .card li, .author-copy p, .testimonial p, .faq-answer, .highlight-box p, .price-panel p {
+      color: var(--text-soft);
+      font-size: 18px;
+    }
+
+    .card ul { list-style: none; }
+    .card li + li { margin-top: 12px; }
+
+    .author-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .author-photo {
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .author-copy, .highlight-box {
+      padding: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(95,199,255,0.05));
+      border: 1px solid rgba(95,199,255,0.16);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .author-copy p + p { margin-top: 14px; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .testimonial {
+      padding: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+    }
+
+    .testimonial strong {
+      display: block;
+      margin-top: 14px;
+      color: var(--gold-soft);
+      font-size: 16px;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .faq-item {
+      overflow: hidden;
+      background: rgba(255,255,255,0.07);
+    }
+
+    .faq-question {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 700;
+      text-align: left;
+      padding: 22px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .faq-question span:last-child {
+      color: var(--gold-soft);
+      font-size: 24px;
+      line-height: 1;
+      margin-left: 10px;
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 24px 22px;
+    }
+
+    .price-section {
+      padding: 24px 0 70px;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.12);
+      margin-top: 8px;
+    }
+
+    .price-panel {
+      text-align: center;
+      padding: 34px 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+    }
+
+    .urgency {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(212,175,55,0.10);
+      border: 1px solid rgba(212,175,55,0.28);
+      color: var(--gold-soft);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .small-muted {
+      font-size: 14px;
+      color: rgba(255,255,255,0.58);
+      margin-top: 8px;
+    }
+
+    .price-tag {
+      color: var(--gold-soft);
+      font-size: clamp(44px, 8vw, 72px);
+      font-weight: 700;
+      line-height: 1;
+      margin-top: 10px;
+    }
+
+    .seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 22px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(95,199,255,0.10);
+      border: 1px solid rgba(95,199,255,0.28);
+      color: var(--blue-soft);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .seal-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(95,199,255,0.16);
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .two-col,
+      .author-grid,
+      .testimonials-grid,
+      .mini-points {
+        grid-template-columns: 1fr;
+      }
+
+      .hero { padding-top: 22px; }
+      .card, .author-copy, .highlight-box, .testimonial, .price-panel { padding: 22px; }
+      .card p, .card li, .author-copy p, .testimonial p, .faq-answer, .highlight-box p, .price-panel p { font-size: 17px; }
+      .faq-question { font-size: 18px; padding: 20px 22px; }
+      .faq-answer { padding: 0 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="container">
+      <div class="timer-wrap">
+        <div class="timer-box">
+          Valor promocional disponível por mais <span id="countdown">14:59</span>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <div class="badge">Produto digital • acesso imediato</div>
+          <h1>IA Estratégica na <span style="color: var(--goldSoft);">Prática Clínica</span> e Terapêutica</h1>
+          <p class="lead">Aprenda a utilizar a Inteligência Artificial de forma ética, prática e segura na sua atuação profissional.</p>
+
+          <div class="mini-points">
+            <div class="mini-point">✔ Aplicação imediata</div>
+            <div class="mini-point">✔ Sem substituir a escuta</div>
+            <div class="mini-point">✔ Orientação responsável</div>
+          </div>
+
+          <div class="cta-row">
+            <a class="btn" href="https://pay.hotmart.com/Y101558109R?off=4w91oz2r" target="_blank" rel="noopener noreferrer">Acessar por R$47</a>
+            <div class="cta-note">Pagamento único • acesso online • certificado incluso</div>
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <img src="mockup-hero.jpg" alt="Mockup do produto IA Estratégica na Prática Clínica e Terapêutica" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid two-col">
+      <div class="card">
+        <h2>O que você recebe</h2>
+        <ul>
+          <li>✔ Acesso completo à formação</li>
+          <li>✔ Conteúdo direto ao ponto</li>
+          <li>✔ Aplicação prática</li>
+          <li>✔ Biblioteca de apoio</li>
+          <li>✔ Certificado de conclusão</li>
+          <li>✔ Acesso vitalício</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Para quem é</h2>
+        <ul>
+          <li>✔ Psicólogos e terapeutas</li>
+          <li>✔ Profissionais da saúde emocional</li>
+          <li>✔ Quem busca segurança no uso da IA</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container author-grid">
+      <div class="author-photo">
+        <img src="amanda.jpg" alt="Amanda Ragazzi" />
+      </div>
+      <div class="author-copy">
+        <h2>Conteúdo produzido por quem vive a prática clínica há 11 anos</h2>
+        <p>Esta formação foi desenvolvida por Amanda Ragazzi, com base na experiência real de mais de 11 anos de atuação clínica.</p>
+        <p>O conteúdo não nasce de teoria superficial nem de tendências passageiras, mas da prática, da responsabilidade técnica e da necessidade de orientar profissionais diante de um cenário tecnológico que já está em curso.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>O que profissionais estão dizendo</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial">
+          <p>“A formação me ajudou a entender com clareza onde a IA pode ser usada sem comprometer minha atuação clínica.”</p>
+          <strong>— Psicóloga clínica</strong>
+        </div>
+        <div class="testimonial">
+          <p>“Conteúdo direto, responsável e aplicável. Trouxe mais segurança no uso da tecnologia na minha prática.”</p>
+          <strong>— Terapeuta</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Dúvidas frequentes</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" type="button">A Inteligência Artificial pode substituir a atuação clínica?<span>+</span></button>
+          <div class="faq-answer">Não. A IA não substitui a escuta, a análise ou a tomada de decisão do profissional. Nesta formação, você aprende a utilizá-la como apoio, mantendo sua responsabilidade técnica.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">Esse conteúdo é permitido dentro da prática profissional?<span>+</span></button>
+          <div class="faq-answer">A formação é orientada pelos princípios éticos da prática profissional e aborda o uso da tecnologia de forma responsável, consciente e alinhada à atuação clínica e terapêutica.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">Preciso ter conhecimento prévio em Inteligência Artificial?<span>+</span></button>
+          <div class="faq-answer">Não. O conteúdo foi estruturado para ser compreendido e aplicado mesmo por quem ainda não tem experiência prévia com IA.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">Como terei acesso ao conteúdo?<span>+</span></button>
+          <div class="faq-answer">Após a confirmação da compra, o acesso é liberado imediatamente pela plataforma online.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">Por quanto tempo terei acesso?<span>+</span></button>
+          <div class="faq-answer">O acesso é vitalício, para que você possa assistir e revisitar o conteúdo no seu próprio ritmo.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">Recebo certificado?<span>+</span></button>
+          <div class="faq-answer">Sim. Ao concluir a formação, você recebe um certificado de conclusão.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="price-section">
+    <div class="container">
+      <div class="price-panel">
+        <div class="urgency">Condição atual de acesso • em breve o valor será ajustado para R$197,00</div>
+        <div class="small-muted">Oferta de entrada para venda rápida</div>
+        <div class="price-tag">R$47,00</div>
+        <p>Pagamento único • acesso imediato • conteúdo prático e aplicável</p>
+
+        <div class="cta-row" style="justify-content:center; margin-top:24px;">
+          <a class="btn" href="https://pay.hotmart.com/Y101558109R?off=4w91oz2r" target="_blank" rel="noopener noreferrer">Quero acessar agora</a>
+        </div>
+
+        <div class="seal">
+          <span class="seal-icon">✓</span>
+          Garantia de 7 dias
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll('.faq-item').forEach(function(item) {
+      const button = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      const icon = button.querySelector('span:last-child');
+      answer.style.display = 'none';
+
+      button.addEventListener('click', function() {
+        const isOpen = answer.style.display === 'block';
+        document.querySelectorAll('.faq-answer').forEach(function(el) { el.style.display = 'none'; });
+        document.querySelectorAll('.faq-question span:last-child').forEach(function(el) { el.textContent = '+'; });
+
+        if (!isOpen) {
+          answer.style.display = 'block';
+          icon.textContent = '–';
+        }
+      });
+    });
+
+    let totalSeconds = 15 * 60;
+    const countdownEl = document.getElementById('countdown');
+
+    function updateCountdown() {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      countdownEl.textContent =
+        String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+
+      if (totalSeconds > 0) {
+        totalSeconds--;
+      } else {
+        totalSeconds = 15 * 60;
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
